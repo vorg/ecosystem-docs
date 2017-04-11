@@ -134,7 +134,7 @@ function syncDocs(repoList, options, done) {
       headers: headers
     }, function(err, res, data) {
       if (err) return next(err)
-      repo.issues = data.content.length
+      repo.issues = data.length
       next()
     })
   }
