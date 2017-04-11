@@ -133,6 +133,8 @@ function syncDocs(repoList, options, done) {
       json: true,
       headers: headers
     }, function(err, res, data) {
+      console.log('err', err)
+      console.log('data', data)
       if (err) return next(err)
       repo.issues = data.length
       next()
