@@ -34,12 +34,13 @@ function syncDocs(repoList, options, done) {
   function updateRepo(repo, next) {
     debug('Updating repo %s', repo.path)
 
-    var bump = after(4, save)
+    var bump = after(5, save)
 
     getPages(repo, bump)
     getReadme(repo, bump)
     getPackage(repo, bump)
     getContributors(repo, bump)
+    getIssues(repo, bump)
 
     function save(err) {
       if (err) return next(err)
@@ -121,6 +122,20 @@ function syncDocs(repoList, options, done) {
       }
 
       return next(null, repo.package = json)
+    })
+  }
+
+  function getIssues(repo, next) {
+    const uri = 'https://api.github.com/repos/'+repo.path+'/issues?state=open'
+    console.log('getting', uri)
+
+    request.get(uri, {
+      json: true,
+      headers: headers
+    }, function(err, res, data) {
+      if (err) return next(err)
+      repo.issues = data.content.length
+      next()
     })
   }
 
