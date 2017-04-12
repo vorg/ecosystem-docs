@@ -127,14 +127,11 @@ function syncDocs(repoList, options, done) {
 
   function getIssues(repo, next) {
     const uri = 'https://api.github.com/repos/'+repo.path+'/issues?state=open'
-    console.log('getting', uri)
 
     request.get(uri, {
       json: true,
       headers: headers
     }, function(err, res, data) {
-      console.log('err', err)
-      console.log('data', data)
       if (err) return next(err)
       repo.issues = data.length
       next()
